@@ -2,6 +2,7 @@
   margin: 0 auto;
   padding: 20px;
   text-align: center;
+  font-family: 'Oxygen';
 }
 
 ul {
@@ -21,4 +22,6 @@ li {
 
 input {
   margin: 5px;
+  height: 15px;
+  vertical-align: middle;
 }
