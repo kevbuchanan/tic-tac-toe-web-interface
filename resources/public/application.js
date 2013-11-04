@@ -41,6 +41,7 @@ function Game(board, size, playerPiece, state, difficulty) {
   this.listenForMove = function(){
     var that = this
     $(emptySquare).on("click", function(event){
+      $(gameArea).append("<img src='/loader-gif'>")
       var move = $(this).data("spot")
       that.move = move
       var url = "/game"

@@ -6,7 +6,8 @@
 (def routes {:get {"/" game-index
                    "/favicon.ico" favicon
                    "/application.js" js
-                   "/style.css" css}
+                   "/style.css" css
+                    "/loader-gif" gif}
              :post {"/" (wrap-params create-game)
                     "/game" (wrap-params update-game)}})
 

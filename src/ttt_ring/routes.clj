@@ -52,6 +52,8 @@
 
 (defn css [req] (file-response "style.css" {:root "resources/public"}))
 
+(defn gif [req] (file-response "ajax-loader.gif" {:root "resources/public"}))
+
 (defn not-found [req]
   {:status 404
    :headers {"Content-Type" "text/html"}
