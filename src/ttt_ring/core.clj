@@ -1,12 +1,18 @@
 (ns ttt-ring.core
   (:require [ring.adapter.jetty :as jetty]
-            [ring.middleware.reload :refer [wrap-reload]]
-            [ttt-ring.routes :refer :all]
-            [tic-tac-toe.board :refer [new-board]]))
+            [ring.middleware.params :refer [wrap-params]]
+            [ttt-ring.routes :refer :all]))
 
-(defn app [req]
-  (println req)
-  (let [controller (get ((:request-method req) routes) (:uri req))]
+(def routes {:get {"/" game-index
+                   "/favicon.ico" favicon
+                   "/application.js" js
+                   "/style.css" css}
+             :post {"/" (wrap-params create-game)
+                    "/game" (wrap-params update-game)}})
+
+(defn app [req & handlers]
+  (let [handlers (or (first handlers) routes)
+        controller (or (get ((:request-method req) handlers) (:uri req)) not-found)]
     (controller req)))
 
 (defn -main [& [port]]
