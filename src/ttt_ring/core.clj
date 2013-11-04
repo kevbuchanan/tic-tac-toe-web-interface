@@ -16,4 +16,4 @@
     (controller req)))
 
 (defn -main [& [port]]
-  (jetty/run-jetty app {:port (Integer. (or port 5000)) :join? false}))
+  (jetty/run-jetty app {:port (Integer. (get (System/getenv) "PORT" "5000")) :join? false}))
