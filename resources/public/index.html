@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="application.js"></script>
+  <title>Tic Tac Toe</title>
+</head>
+<body>
+  <div class='wrapper'>
+    <h1>Kevin's Tic Tac Toe</h1>
+    <form id="start" action="/" method="POST">
+      <label>Size:
+        <input type='radio' name='size' value='3' checked>3
+        <input type='radio' name='size' value='4'>4
+        <input type='radio' name='size' value='5'>5
+        <input type='radio' name='size' value='6'>6
+        <input type='radio' name='size' value='7'>7
+      </label>
+      <br>
+      <label>Difficulty:
+        <input type='radio' name='difficulty' value='1'>1
+        <input type='radio' name='difficulty' value='2' checked>2
+        <input type='radio' name='difficulty' value='3'>3
+      </label>
+      <br>
+      <label>Order:
+        <input type='radio' name='order' value='1' checked>1
+        <input type='radio' name='order' value='2'>2
+      </label>
+      <br>
+      <input type="submit" value="Start">
+    </form>
+    <div id="game">
+    </div>
+  </div>
+</body>
+</html>
