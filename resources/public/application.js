@@ -15,62 +15,75 @@ var square = function(piece, index){
 }
 
 var winMessage = function(winner){
-  return "<h3>Game Over</h3><p>" + winner + " won!</p>"
+  return "<h3>Game Over</h3><p class='win'>" + winner + " won!</p>"
 }
 
-var drawMessage = "<h3>Draw</h3>"
+var drawMessage = "<h3 class='draw'>Draw</h3>"
 
-function Game(board, size, playerPiece, state, difficulty) {
+function Game(board, size, playerPiece, state, difficulty, winner) {
   this.board = board
   this.size = size
   this.piece = playerPiece
   this.move = null
   this.state = state
   this.difficulty = difficulty
-  this.displayBoard = function(){
-    $(gameArea).empty()
-    $(gameArea).append(boardStruct)
-    var size = this.size
-    this.board.forEach(function(el, index){
-      $(boardId).append(square(el, index))
-      if ((index % size) == size - 1){
-        $(boardId).append("<br>")
-      }
-    })
-  }
-  this.listenForMove = function(){
-    var that = this
-    $(emptySquare).on("click", function(event){
-      $(gameArea).append("<img src='/loader-gif'>")
-      var move = $(this).data("spot")
-      that.move = move
-      var url = "/game"
-      var data = {"board" : that.board,
-                  "piece" : that.piece,
-                  "move" : that.move,
-                  "difficulty" : that.difficulty}
-      $.post(url, data, function(response){
-        startGame(response)
-      }, "JSON")
-    })
-  }
+  this.winner = winner
 }
 
-var startGame = function(gameData){
-  var game = new Game(gameData.board, gameData.size, gameData.piece, gameData.state, gameData.difficulty)
-  game.displayBoard()
-  if (game.state == "playing"){
-    game.listenForMove()
+Game.prototype.displayBoard = function(){
+  $(gameArea).empty()
+  $(gameArea).append(boardStruct)
+  var size = this.size
+  this.board.forEach(function(el, index){
+    $(boardId).append(square(el, index))
+    if ((index % size) == size - 1){
+      $(boardId).append("<br>")
+    }
+  })
+}
+
+Game.prototype.listenForMove = function(){
+  var that = this
+  $(emptySquare).on("click", function(event){
+    $(gameArea).append("<img class='load' src='/loader-gif'>")
+    var move = $(this).data("spot")
+    that.move = move
+    var url = "/game"
+    var data = {"board" : that.board,
+                "piece" : that.piece,
+                "move" : that.move,
+                "difficulty" : that.difficulty}
+    $.post(url, data, function(response){
+      that.update(response)
+    }, "JSON")
+  })
+}
+
+Game.prototype.start = function(){
+  this.displayBoard()
+  if (this.state == "playing"){
+    this.listenForMove()
   }
   else {
-    endGame(gameData.state, gameData.winner)
+    this.end()
   }
 }
 
-var endGame = function(state, winner){
+Game.prototype.update = function(gameData){
+  this.board = gameData.board
+  this.size = gameData.size
+  this.piece = gameData.piece
+  this.move = null
+  this.state = gameData.state
+  this.difficulty = gameData.difficulty
+  this.winner = gameData.winner
+  this.start()
+}
+
+Game.prototype.end = function(){
   $(emptySquare).off()
-  if (state == "win"){
-    $(gameArea).append(winMessage(winner))
+  if (this.state == "win"){
+    $(gameArea).append(winMessage(this.winner))
   }
   else {
     $(gameArea).append(drawMessage)
@@ -83,7 +96,8 @@ $(document).ready(function(){
     var data = $(this).serialize()
     var url = $(this).attr("action")
     $.post(url, data, function(response){
-      startGame(response)
+      game = new Game(response.board, response.size, response.piece, response.state, response.difficulty, response.winner)
+      game.start()
     }, "JSON")
   })
 })
