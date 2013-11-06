@@ -48,11 +48,11 @@
 
 (defn favicon [req] nil)
 
-(defn js [req] (file-response "application.js" {:root "resources/public"}))
+(defn js [req]  "application.js")
 
-(defn css [req] (file-response "style.css" {:root "resources/public"}))
+(defn css [req]  "style.css")
 
-(defn gif [req] (file-response "ajax-loader.gif" {:root "resources/public"}))
+(defn gif [req] "ajax-loader.gif")
 
 (defn not-found [req]
   {:status 404

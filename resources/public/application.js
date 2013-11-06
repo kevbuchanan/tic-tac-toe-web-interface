@@ -45,7 +45,7 @@ Game.prototype.displayBoard = function(){
 Game.prototype.listenForMove = function(){
   var that = this
   $(emptySquare).on("click", function(event){
-    $(gameArea).append("<img class='load' src='/loader-gif'>")
+    $(gameArea).append("<img class='load' src='/ajax-loader.gif'>")
     var move = $(this).data("spot")
     that.move = move
     var url = "/game"
