@@ -8,16 +8,13 @@
 
     (defn end-test [board] board)
 
-    (defn turn-test [piece board] true)
-
     (it "ends if the game is over"
       (should= [:X :- :X :O :O :O :- :- :-] (start {:players [:ai :human]
                              :pieces [:X :O]
                              :board [:X :- :X :O :O :O :- :- :-]
                              :difficulty 3
                              :move-fn move-test1
-                             :end-fn end-test
-                             :turn-fn turn-test})))
+                             :end-fn end-test})))
 
     (it "gets a move from the ai if the game is not over"
       (should= [:X :X :X :O :O :- :- :- :-] (start {:players [:ai :human]
@@ -25,8 +22,7 @@
                              :board [:X :- :X :O :O :- :- :- :-]
                              :difficulty 3
                              :move-fn move-test1
-                             :end-fn end-test
-                             :turn-fn turn-test})))
+                             :end-fn end-test})))
 
     (defn move-test2 [player board piece difficulty] (if (= player :ai) 8 5))
 
@@ -36,5 +32,4 @@
                              :board [:X :- :X :O :O :- :- :- :-]
                              :difficulty 3
                              :move-fn move-test2
-                             :end-fn end-test
-                             :turn-fn turn-test}))))
+                             :end-fn end-test}))))

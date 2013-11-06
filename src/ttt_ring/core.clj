@@ -5,18 +5,18 @@
             [ring.middleware.file-info :refer [wrap-file-info]]
             [ttt-ring.routes :refer :all]))
 
-(def routes {:get {"/" game-index
-                   "/favicon.ico" favicon
-                   "/application.js" (-> js (wrap-file "resources/public") (wrap-file-info))
-                   "/style.css" (-> css (wrap-file "resources/public") (wrap-file-info))
-                    "/ajax-loader.gif" (-> gif (wrap-file "resources/public") (wrap-file-info))}
-             :post {"/" (wrap-params create-game)
-                    "/game" (wrap-params update-game)}})
+(def routes {:get {"/" game-index}
+             :post {"/" create-game
+                    "/game" update-game}})
 
-(defn app [req & handlers]
-  (let [handlers (or (first handlers) routes)
-        controller (or (get ((:request-method req) handlers) (:uri req)) not-found)]
-    (controller req)))
+(defn handler [request]
+  (let [controller (or (get ((:request-method request) routes) (:uri request)) not-found)]
+    (controller request)))
+
+(def app (-> handler
+             wrap-params
+             (wrap-file "resources/public")
+             wrap-file-info))
 
 (defn -main [& [port]]
   (jetty/run-jetty app {:port (Integer. (get (System/getenv) "PORT" "5000")) :join? false}))

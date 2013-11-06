@@ -1,12 +1,11 @@
-(ns ttt-ring.routes
-  (:require [ring.adapter.jetty :as jetty]
+(ns ttt-ring.routes (:require [ring.adapter.jetty :as jetty]
             [ttt-ring.round :refer [start]]
             [tic-tac-toe.board :refer [new-board make-move winner board-size]]
             [tic-tac-toe.ai :refer [next-move]]
             [ring.util.response :refer [response file-response]]
             [clojure.data.json :as json]))
 
-(defn game-index [req] (file-response "index.html" {:root "resources/public"}))
+(defn game-index [req] {:status 200 :body "index" :headers {"Content-Type" "text/html"}})
 
 (defn show-game [player board piece difficulty]
   (if (= player :human)
@@ -16,8 +15,6 @@
 (defn end-game [board]
   (let [state (if (winner board) "win" "draw")]
     (response (json/write-str {:board board :size (board-size board) :state state :winner (winner board)}))))
-
-(defn nil-turn [piece board] nil)
 
 (defn create-game [req]
   (let [params (:form-params req)
@@ -29,8 +26,7 @@
           :board (new-board size)
           :difficulty difficulty
           :move-fn show-game
-          :end-fn end-game
-          :turn-fn nil-turn})))
+          :end-fn end-game})))
 
 (defn update-game [req]
   (let [params (:form-params req)
@@ -39,22 +35,13 @@
         piece (keyword (get params "piece"))
         difficulty (Integer. (get params "difficulty"))]
     (start {:players [:ai :human]
-                :pieces [:O :X]
-                :board (make-move board move piece)
-                :difficulty difficulty
-                :move-fn show-game
-                :end-fn end-game
-                :turn-fn nil-turn})))
-
-(defn favicon [req] nil)
-
-(defn js [req]  "application.js")
-
-(defn css [req]  "style.css")
-
-(defn gif [req] "ajax-loader.gif")
+            :pieces [:O :X]
+            :board (make-move board move piece)
+            :difficulty difficulty
+            :move-fn show-game
+            :end-fn end-game})))
 
 (defn not-found [req]
-  {:status 404
+ {:status 404
    :headers {"Content-Type" "text/html"}
    :body "Page Not Found"})
