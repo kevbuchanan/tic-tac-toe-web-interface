@@ -2,14 +2,16 @@
   (:require-macros [specljs.core :refer [describe it should-not= should=]])
   (:require [specljs.core]
             [ttt-ring.applicationjs :as app]
-            [jayq.core :as jq]))
+            [dommy.core :as dom]
+            [dommy.utils :as utils])
+  (:use-macros [dommy.macros :only [sel sel1 node]]))
 
-(def test-form "<form id='start'><input type='radio' name='size' value='1' checked></form>")
+(def test-form (node [:form#start "Start form"]))
 
 (describe "Starting a game"
   (it "listens for a #start form submission"
-    (jq/append (jq/$ "body") test-form)
-    (should-not= nil (jq/$ "#start"))
+    (dom/append! (sel1 :body) test-form)
+    (should-not= nil (sel1 "#start"))
     (app/add-form-listener)
-    (jq/trigger (jq/$ "#start") :submit)
-    (should-not= nil (jq/$ "#loading"))))
+    (dom/fire! (sel1 "#start") :submit)
+    (should-not= nil (sel1 "#loading"))))

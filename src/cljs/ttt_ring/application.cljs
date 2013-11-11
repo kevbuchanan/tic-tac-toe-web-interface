@@ -1,7 +1,10 @@
 (ns ttt-ring.applicationjs
-  (:require [jayq.core :as jq]))
+  (:require [dommy.core :as dom]
+            [dommy.utils :as utils])
+  (:use-macros [dommy.macros :only [sel sel1 node]]))
 
 (defn add-form-listener []
-  (jq/on (jq/$ "#start") :submit
+  (dom/listen! (sel1 "#start") :submit
     (fn [event]
-      (jq/append (jq/$ "body") "<div id='loading'></div>"))))
+     (.preventDefault event)
+      (dom/append! (sel1 "body") (node [:div#loading "loading"])))))

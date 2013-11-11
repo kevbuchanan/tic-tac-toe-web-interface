@@ -6,7 +6,7 @@
                  [ring/ring-core "1.2.1"]
                  [tic-tac-toe "0.1.0-SNAPSHOT"]
                  [org.clojure/data.json "0.2.3"]
-                 [jayq "2.5.0"]]
+                 [prismatic/dommy "0.1.1"]]
   :min-lein-version "2.0.0"
   :main ttt-ring.core
   :profiles {:dev {:dependencies [[speclj "2.5.0"]
