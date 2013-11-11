@@ -7,4 +7,7 @@
   (dom/listen! (sel1 "#start") :submit
     (fn [event]
      (.preventDefault event)
+     (js/alert (.-currentTarget event))
       (dom/append! (sel1 "body") (node [:div#loading "loading"])))))
+
+(set! (.-onload js/window) add-form-listener)

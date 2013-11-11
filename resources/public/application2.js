@@ -28786,14 +28786,16 @@ goog.require("dommy.core");
 ttt_ring.applicationjs.add_form_listener = function add_form_listener() {
   return dommy.core.listen_BANG_.call(null, document.getElementById("start"), "\ufdd0:submit", function(event) {
     event.preventDefault();
+    alert(event.currentTarget);
     return dommy.core.append_BANG_.call(null, document.body, function() {
-      var dom18236 = document.createElement("div");
-      dom18236.setAttribute("id", "loading");
-      dom18236.appendChild(document.createTextNode("loading"));
-      return dom18236
+      var dom26882 = document.createElement("div");
+      dom26882.setAttribute("id", "loading");
+      dom26882.appendChild(document.createTextNode("loading"));
+      return dom26882
     }())
   })
 };
+window.onload = ttt_ring.applicationjs.add_form_listener;
 goog.provide("ttt_ring.applicationjs_spec");
 goog.require("cljs.core");
 goog.require("dommy.utils");
