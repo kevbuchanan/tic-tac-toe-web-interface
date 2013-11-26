@@ -3,7 +3,8 @@
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.file :refer [wrap-file]]
             [ring.middleware.file-info :refer [wrap-file-info]]
-            [ttt-ring.routes :refer :all]))
+            [ttt-ring.routes :refer :all]
+            [ttt-ring.adapter :refer [run-kevins-server]]))
 
 (def routes {:get {"/" game-index}
              :post {"/" create-game
@@ -19,4 +20,4 @@
              wrap-file-info))
 
 (defn -main [& [port]]
-  (jetty/run-jetty app {:port (Integer. (get (System/getenv) "PORT" "5000")) :join? false}))
+  (run-kevins-server app {:port (Integer. (get (System/getenv) "PORT" "5000")) :join? false}))
